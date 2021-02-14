@@ -43,7 +43,7 @@ class User extends Authenticatable
 
     public function admin() 
     {
-        return $this->is_admin==1?true:false;
+        return $this->role==1?true:false;
     }
 
     public function access_list()

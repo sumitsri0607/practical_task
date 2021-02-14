@@ -156,7 +156,7 @@
                         <div class="row mt-4 mb-4">
                             <div class="m-auto">
                                 <button type="submit" class="btn btn-primary">
-                                    Add
+                                    ADD
                                 </button>
                             </div>
                         </div>

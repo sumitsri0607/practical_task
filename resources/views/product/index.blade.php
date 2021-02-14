@@ -1,12 +1,17 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
-    <div class="row">
-    @if(Auth()->user()->access_list->add == 1)
-    <a href="{{route('product.create')}}">Add Product</a>
-    @else
-    @endif
-    </div>
+<div class="container">
+        <div class="row">
+            <div class="col-6">
+                @if(Auth()->user()->access_list->add == 1)
+                <a href="{{route('product.create')}}">Add Product</a>
+                @else
+                @endif
+             </div>   
+            <div class="ml-auto">
+                <a href="{{route('home')}}">Back</a>
+            </div> 
+        </div>
         <table class="table text-center">
         @if(Session::has('message'))
                     <p class="alert alert-info">{{ Session::get('message') }}</p>
@@ -52,5 +57,6 @@
                 @endif
             </tbody>
         </table> 
+        {{ $products->links() }}   
     </div>   
 @endsection

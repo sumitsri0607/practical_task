@@ -38,7 +38,7 @@ class AdminController extends Controller
             $user = new User;
             $user->name = $request->input('name');
             $user->email = $request->input('email');
-            $user->password = $request->input('password');
+            $user->password = Hash::make($request->input('password'));
             $user->save();
 
             $access = New AccessList;
@@ -67,7 +67,6 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            // 'password' => 'min:8',
             'view' => 'required',
             'edit' => 'required',
             'add' => 'required',

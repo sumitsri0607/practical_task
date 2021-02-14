@@ -164,7 +164,7 @@
                         <div class="row mt-4 mb-4">
                             <div class="m-auto">
                                 <button type="submit" class="btn btn-primary">
-                                    INVITE
+                                    SAVE
                                 </button>
                             </div>
                         </div>
