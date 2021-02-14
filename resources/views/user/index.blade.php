@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+<div class="container">
     <div class="row">
         <div class="col-6">
             <a href="{{route('user.create')}}">Add User</a>
@@ -37,9 +37,12 @@
                             <td>{{ $user->access_list->edit==1?"Yes":"No" }}</td>
                             <td>{{ $user->access_list->add==1?"Yes":"No" }}</td>
                             <td>{{ $user->access_list->delete==1?"Yes":"No" }}</td>
-                            <td><a href="{{ route('user.edit', $user->id)}}">Edit</a></td>
+                            <td><a class="btn btn-success" href="{{ route('user.edit', $user->id)}}">Edit</a>
+                            <a class="btn btn-danger" href="{{ route('user.destroy', $user->id)}}"  onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                            </td>
                         </tr>
                     @endforeach
+                           
                 @else
                     <tr>
                         <td colspan="8"> No record found</td>
@@ -47,5 +50,6 @@
                 @endif
             </tbody>
         </table> 
-    </div>   
+        {{ $users->links() }}   
+ </div>    
 @endsection

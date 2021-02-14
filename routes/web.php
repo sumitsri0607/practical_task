@@ -27,11 +27,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/store', [App\Http\Controllers\AdminController::class, 'store'])->name('user.store');
     Route::get('/admin/edit/{id}', [App\Http\Controllers\AdminController::class, 'edit'])->name('user.edit');
     Route::post('/admin/update/{id}', [App\Http\Controllers\AdminController::class, 'update'])->name('user.update');
+    Route::get('/admin/destroy/{id}', [App\Http\Controllers\AdminController::class, 'destroy'])->name('user.destroy');
     // Product//
     Route::get('/product/index', [App\Http\Controllers\ProductController::class, 'index'])->name('product.list');
     Route::get('/product/create', [App\Http\Controllers\ProductController::class, 'create'])->name('product.create');
     Route::post('/product/store', [App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
     Route::get('/product/edit/{id}', [App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
+    Route::get('/product/show/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
     Route::post('/product/update/{id}', [App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
+    Route::get('/product/destroy/{id}', [App\Http\Controllers\ProductController::class, 'destroy'])->name('product.destroy');
 });
     

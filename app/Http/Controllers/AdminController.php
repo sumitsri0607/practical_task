@@ -6,36 +6,22 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\AccessList;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $users = User::orderBy('created_at', 'desc')->get();
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
         return view('user.index', ['users' => $users])->with('no', 1);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('user.add');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -47,34 +33,27 @@ class AdminController extends Controller
             'add' => 'required',
             'delete' => 'required',
         ]);
+        DB::beginTransaction();
+        try{ 
+            $user = new User;
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->password = $request->input('password');
+            $user->save();
 
-        $user = new User;
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password = $request->input('password');
-        $user->save();
-
-        $access = New AccessList;
-        $access->user_id = $user->id;
-        $access->view = $request->input('view');
-        $access->edit = $request->input('edit');
-        $access->add = $request->input('add');
-        $access->delete = $request->input('delete');
-        $access->save();
-        
-        return redirect()->route('user.list')->with('message','User created successfully');
-   
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+            $access = New AccessList;
+            $access->user_id = $user->id;
+            $access->view = $request->input('view');
+            $access->edit = $request->input('edit');
+            $access->add = $request->input('add');
+            $access->delete = $request->input('delete');
+            $access->save();
+            DB::commit();
+            return redirect()->route('user.list')->with('message','User created successfully');
+            } catch(\Exception $e){
+            DB::rollback();    
+            return redirect()->route('user.list')->with('message','Something went wrong');
+        }
     }
 
     public function edit($id)
@@ -118,14 +97,16 @@ class AdminController extends Controller
         
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        $access = AccessList::where('user_id', $id)->first();
+            if(!empty($user)){
+            $access->delete();
+            $user->delete();
+            return redirect()->route('user.list')->with('message','Updated successfully');
+            }else{
+            return redirect()->route('user.list')->with('message','Invalid request');
+        }
     }
 }

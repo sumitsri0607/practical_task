@@ -4,8 +4,16 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-            <div class="card-header">{{ __('Edit New User') }}</div>
-               
+                <div class="card-header">
+                    <div class="row">
+                                <div class="col-md-4 text-left panel-title">  
+                                {{ __('Edit New User') }}
+                                </div>
+                                <div class="col-md-8 col-md-offset-6 text-right">
+                                    <a href="{{ route('user.list') }}">Back</a>
+                                </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('user.update', $user->id) }}">
                         @csrf
